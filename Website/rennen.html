@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
+    <script defer src="rennen.js"></script>
+    <title>Document</title>
+    <style>
+        /* Center the content of the entire page */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #telemetryTable {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;  /* Center-align text in the table */
+        }
+
+        #telemetryTable thead tr {
+            background-color: #009879;
+            color: #ffffff;
+        }
+
+        #telemetryTable th, #telemetryTable td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        #telemetryTable tbody tr:nth-child(even) {
+            background-color: #f3f3f3;
+        }
+
+        #telemetryTable tbody tr:hover {
+            background-color: #e9f5f2;
+        }
+
+        #telemetryTable th {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+
+        h1 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="logo-bar">
+        <a href="https://assettocorsa.gg/"><img src="ACLogo.png" id="IMGLogo" alt="AC Logo"></a>
+    </div>
+    <div class="navbar">
+        <div class="navbar-menu">
+            <ul>
+                <li><a href="index.html">Rundenzeiten</a></li>
+                <li><a class="active" href="rennen.html">Rennen</a></li>
+                <li><a href="LiveMap.html">Live Map</a></li>
+                <li><a href="LiveFeed.html">Live Feed</a></li>
+                <li><a href="AllInfo.html">Alle Infos</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <h1>Rennzeiten</h1>
+    
+    <!-- Telemetry Table -->
+    <table id="telemetryTable">
+        <thead>
+            <tr>
+                <th>Leaderboard Position</th>
+                <th>Driver Name</th>
+                <th>Speed (km/h)</th>
+                <th>Best Lap Time (s)</th>
+                <th>Lap Count</th>
+                <th>Current Lap Time (s)</th>
+                <th>In Pit</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <footer class="footer">
+        <p>Erstellt von Patrik Grabner & Felix Baumann</p>
+    </footer>
+</body>
+</html>
