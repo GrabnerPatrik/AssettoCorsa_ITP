@@ -39,4 +39,4 @@ function updateTelemetryTable(data) {
 }
 
 // Refresh data every 5 seconds
-setInterval(fetchTelemetryData, 5000);
+setInterval(fetchTelemetryData, 2000);

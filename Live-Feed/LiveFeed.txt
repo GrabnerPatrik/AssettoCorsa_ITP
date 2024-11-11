@@ -1,0 +1,8 @@
+Live Feed durch OBS
+--------------------
+
+In OBS einen Stream Starten und als Endpoint die Webseite über einen Stream Key angeben
+Stream_Key: assetto_stream
+https://chatgpt.com/share/6731c424-7e84-8010-8558-3fe67b0b7154
+
+Download NginX mit RTMP Server

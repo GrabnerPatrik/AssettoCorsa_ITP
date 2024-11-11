@@ -1,31 +1,70 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="index.js"></script>
-    <link rel="stylesheet" href="navbar.css">
-    <title>Document</title>
-    
+    <title>Track Map Display</title>
+    <style>
+        #trackMap {
+            border: 1px solid #000;
+            margin: 20px;
+            background-color: #f3f3f3;
+        }
+    </style>
 </head>
 <body>
-    <div class="logo-bar">
-        <a href="https://assettocorsa.gg/"><img src="ACLogo.png" id="IMGLogo" alt="AC Logo"></a>
-    </div>
-    <div class="navbar">
-        <div class="navbar-menu">
-            <ul>
-                <li><a class="active" href="index.html">Rundenzeiten</a></li>
-                <li><a href="rennen.html">Rennen</a></li>
-                <li><a href="LiveMap.html">Live Map</a></li>
-                <li><a href="LiveFeed.html">Live Feed</a></li>
-            </ul>
-        </div>
-    </div>
-    <footer class="footer">
-        <p>Erstellt von Patrik Grabner & Felix Baumann</p>
-    </footer>
-    
+    <h1>Track Map Display</h1>
+    <canvas id="trackMap" width="365.919" height="350.356"></canvas>
+
+    <script>
+        const canvas = document.getElementById('trackMap');
+        const ctx = canvas.getContext('2d');
+
+        // Load and display the track image
+        const trackImage = new Image();
+        trackImage.src = 'Maps/driftmap.png';  // Set path to the track image
+
+        // Draw track map when image is loaded
+        trackImage.onload = () => {
+            ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
+        };
+
+        // Configuration for driver positions based on parameters
+        const X_OFFSET = 178.491;
+        const Z_OFFSET = 145.883;
+        const SCALE_FACTOR = 1;
+
+        // Function to fetch telemetry data and update driver positions
+        async function fetchTelemetryData() {
+            try {
+                const response = await fetch('http://localhost:5000/telemetry');
+                const data = await response.json();
+                updateDriverPositions(data);  // Update driver positions
+            } catch (error) {
+                console.error('Error fetching telemetry data:', error);
+            }
+        }
+
+        // Function to update driver positions on the map
+        function updateDriverPositions(data) {
+            // Redraw track image first
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
+
+            // Draw drivers on the track
+            data.forEach(driver => {
+                const x = (driver.Position.x * SCALE_FACTOR) + X_OFFSET;
+                const y = (driver.Position.z * SCALE_FACTOR) + Z_OFFSET;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = driver.color || 'red';
+                ctx.fill();
+            });
+        }
+
+        // Fetch data every 5 seconds
+        setInterval(fetchTelemetryData, 100);
+    </script>
 </body>
 </html>

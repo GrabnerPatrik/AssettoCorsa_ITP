@@ -1,3 +1,12 @@
+// Helper function to format time in mm:ss:ms
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    const milliseconds = Math.floor((seconds % 1) * 1000);
+
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
+}
+
 // Fetch and display telemetry data every 5 seconds
 async function fetchTelemetryData() {
     try {
@@ -25,9 +34,9 @@ function updateTelemetryTable(data) {
             <td>${driver.DriverName}</td>
             <!--<td>${driver.CarModel}</td>-->
             <td>${driver.SpeedKmh.toFixed(1)}</td>
-            <td>${driver.BestLapTimeSec.toFixed(3)}</td>
+            <td>${formatTime(driver.BestLapTimeSec)}</td>  <!-- Formatted Best Lap Time -->
             <td>${driver.LapCount}</td>
-            <td>${driver.CurrentLapTimeSec.toFixed(3)}</td>
+            <td>${formatTime(driver.CurrentLapTimeSec)}</td> <!-- Formatted Current Lap Time -->
             <!--<td>${driver.LastLapTimeSec.toFixed(3)}</td>-->
             <td>${driver.InPit ? 'Yes' : 'No'}</td>            
         `;
@@ -37,4 +46,4 @@ function updateTelemetryTable(data) {
 }
 
 // Refresh data every 5 seconds
-setInterval(fetchTelemetryData, 500);
+setInterval(fetchTelemetryData, 1000);
