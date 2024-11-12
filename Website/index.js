@@ -42,4 +42,4 @@ function updateTelemetryTable(data) {
     });
 }
 
-setInterval(fetchTelemetryData, 2000);
+setInterval(fetchTelemetryData, 1000);

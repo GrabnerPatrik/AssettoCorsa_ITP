@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Map Display</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
     <style>
         #trackMap {
             border: 1px solid #000;
@@ -13,57 +15,95 @@
     </style>
 </head>
 <body>
+    <div class="logo-bar">
+        <a href="https://assettocorsa.gg/"><img src="ACLogo.png" id="IMGLogo" alt="AC Logo"></a>
+    </div>
+    <div class="navbar">
+        <div class="navbar-menu">
+            <ul>
+                <li><a href="index.html">Rundenzeiten</a></li>
+                <li><a href="rennen.html">Rennen</a></li>
+                <li><a href="LiveMap.html">Live Map</a></li>
+                <li><a href="LiveFeed.html">Live Feed</a></li>
+                <li><a href="AllInfo.html">Alle Infos</a></li>
+            </ul>
+        </div>
+    </div>
+
     <h1>Track Map Display</h1>
-    <canvas id="trackMap" width="365.919" height="350.356"></canvas>
+    <canvas id="trackMap" width="1852.668" height="1047.3228"></canvas>
+
+    <footer class="footer">
+        <p>Erstellt von Patrik Grabner & Felix Baumann</p>
+    </footer>
 
     <script>
         const canvas = document.getElementById('trackMap');
         const ctx = canvas.getContext('2d');
 
-        // Load and display the track image
+        // Define configuration for multiple maps
+        const trackConfigs = {
+            imola: {
+                imagePath: 'Maps/imolamap.png',
+                X_OFFSET: 955.115,
+                Z_OFFSET: 536.043,
+                SCALE_FACTOR: 1
+            },
+            nurburgring: {
+                imagePath: 'Maps/nurburgringmap.png',
+                X_OFFSET: 1000,
+                Z_OFFSET: 500,
+                SCALE_FACTOR: 1.3
+            }
+        };
+
+        // Set the current track configuration (example: 'imola')
+        const currentTrack = 'imola';
+        const config = trackConfigs[currentTrack];
+
+        // Track image setup
         const trackImage = new Image();
-        trackImage.src = 'Maps/driftmap.png';  // Set path to the track image
+        trackImage.src = config.imagePath;
 
         // Draw track map when image is loaded
         trackImage.onload = () => {
             ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
         };
 
-        // Configuration for driver positions based on parameters
-        const X_OFFSET = 178.491;
-        const Z_OFFSET = 145.883;
-        const SCALE_FACTOR = 1;
-
         // Function to fetch telemetry data and update driver positions
         async function fetchTelemetryData() {
             try {
                 const response = await fetch('http://localhost:5000/telemetry');
                 const data = await response.json();
-                updateDriverPositions(data);  // Update driver positions
+                updateDriverPositions(data);
             } catch (error) {
                 console.error('Error fetching telemetry data:', error);
             }
         }
 
-        // Function to update driver positions on the map
+        // Function to update driver positions on the map, showing each driver as a red dot with their name
         function updateDriverPositions(data) {
-            // Redraw track image first
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
 
-            // Draw drivers on the track
             data.forEach(driver => {
-                const x = (driver.Position.x * SCALE_FACTOR) + X_OFFSET;
-                const y = (driver.Position.z * SCALE_FACTOR) + Z_OFFSET;
+                const x = (driver.Position.x * config.SCALE_FACTOR) + config.X_OFFSET;
+                const y = (driver.Position.z * config.SCALE_FACTOR) + config.Z_OFFSET;
 
+                // Draw driver as red dot
                 ctx.beginPath();
                 ctx.arc(x, y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = driver.color || 'red';
+                ctx.fillStyle = 'red';
                 ctx.fill();
+
+                // Draw driver name next to the dot using the correct DriverName property
+                ctx.font = '20px Arial';
+                ctx.fillStyle = 'black';
+                ctx.fillText(driver.DriverName, x + 8, y + 4);  // Offset name slightly for visibility
             });
         }
 
-        // Fetch data every 5 seconds
+        // Fetch telemetry data every 100 milliseconds
         setInterval(fetchTelemetryData, 100);
     </script>
 </body>
