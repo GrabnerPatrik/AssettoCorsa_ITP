@@ -29,40 +29,6 @@
         #fullscreenBtn:hover {
             background-color: #45a049;
         }
-
-        /* Style for the dropdown */
-        .dropdown {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .dropdown:hover {
-            background-color: #45a049;
-        }
-
-        select {
-            padding: 10px;
-            font-size: 16px;
-            background-color: white;
-            color: black;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        select:focus {
-            outline: none;
-            border-color: #4CAF50;
-        }
-
     </style>
 </head>
 <body>
@@ -82,17 +48,6 @@
     </div>
 
     <h1>Track Map Display</h1>
-
-    <!-- Dropdown to select the track -->
-    <div class="dropdown">
-        <select id="trackSelect">
-            <option value="imola">Imola</option>
-            <option value="nurburgring">Nürburgring</option>
-            <option value="redbullring">Red Bull Ring</option>
-            <option value="mugello">Mugello</option>
-            <option value="brandshatch">Brands Hatch</option>
-        </select>
-    </div>
 
     <!-- Fullscreen Button -->
     <button id="fullscreenBtn">Vollbild</button>
@@ -118,42 +73,18 @@
                 HEIGHT: 1047.3228
             },
             nurburgring: {
-                imagePath: 'Maps/Nurburgringmap.png',
-                X_OFFSET: 422.16,
-                Z_OFFSET: 1034.46,
-                SCALE_FACTOR: 1,
-                WIDTH: 720.7248,
-                HEIGHT: 1878.552
-            },
-            redbullring: {
-                imagePath: 'Maps/RedBullRingmap.png',
-                X_OFFSET: 620.875,
-                Z_OFFSET: 401.055,
-                SCALE_FACTOR: 1,
-                WIDTH: 1296.6,
-                HEIGHT: 822.72
-            },
-            mugello: {
-                imagePath: 'Maps/Mugellomap.png',
-                X_OFFSET: 796.459,
-                Z_OFFSET: 314.943,
-                SCALE_FACTOR: 1,
-                WIDTH: 1495.89,
-                HEIGHT: 627.674
-            },
-            brandshatch: {
-                imagePath: 'Maps/Brandshatchmap.png',
-                X_OFFSET: 436.964,
-                Z_OFFSET: 469.659,
-                SCALE_FACTOR: 1,
-                WIDTH: 856.122,
-                HEIGHT: 982.443
+                imagePath: 'Maps/nurburgringmap.png',
+                X_OFFSET: 1000,
+                Z_OFFSET: 500,
+                SCALE_FACTOR: 1.3,
+                WIDTH: 2000,
+                HEIGHT: 1200
             }
         };
 
-        // Set the current track configuration (default 'imola')
-        let currentTrack = 'imola';
-        let config = trackConfigs[currentTrack];
+        // Set the current track configuration (example: 'imola')
+        const currentTrack = 'imola';
+        const config = trackConfigs[currentTrack];
 
         // Set the canvas width and height from the track configuration
         canvas.width = config.WIDTH;
@@ -197,21 +128,7 @@
                 // Draw driver name next to the dot using the correct DriverName property
                 ctx.font = '20px Arial';
                 ctx.fillStyle = 'black';
-
-                // Check if the text is within the canvas bounds and adjust position if needed
-                const nameWidth = ctx.measureText(driver.DriverName.split(" ", 1)).width;
-                let nameX = x + 8;
-                if (nameX + nameWidth > canvas.width) {
-                    nameX = x - nameWidth - 8; // Move name to the left if it exceeds the canvas width
-                }
-
-                let nameY = y + 4;
-                if (nameY > canvas.height) {
-                    nameY = canvas.height - 10; // Prevent name from going off the bottom
-                }
-
-                // Draw the name at the calculated position
-                ctx.fillText(driver.DriverName.split(" ", 1), nameX, nameY);
+                ctx.fillText(driver.DriverName, x + 8, y + 4);  // Offset name slightly for visibility
             });
         }
 
@@ -229,22 +146,6 @@
             } else if (canvas.msRequestFullscreen) { // IE/Edge
                 canvas.msRequestFullscreen();
             }
-        });
-
-        // Update track when user selects a new track from the dropdown
-        document.getElementById('trackSelect').addEventListener('change', (event) => {
-            currentTrack = event.target.value;
-            config = trackConfigs[currentTrack];
-
-            // Update canvas dimensions based on the selected track
-            canvas.width = config.WIDTH;
-            canvas.height = config.HEIGHT;
-
-            // Load new track image and redraw
-            trackImage.src = config.imagePath;
-            trackImage.onload = () => {
-                ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
-            };
         });
     </script>
 </body>
