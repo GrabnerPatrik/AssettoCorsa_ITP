@@ -67,6 +67,7 @@
 </head>
 <body>
     <div class="logo-bar">
+        <a href="https://htlwy.at"><img style="width: 80px; margin-right: 10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/HTL_Waidhofen_Ybbs.png/200px-HTL_Waidhofen_Ybbs.png"></a>
         <a href="https://assettocorsa.gg/"><img src="ACLogo.png" id="IMGLogo" alt="AC Logo"></a>
     </div>
     <div class="navbar">
@@ -81,7 +82,7 @@
         </div>
     </div>
 
-    <h1>Track Map Display</h1>
+    <h2>Track Map Display</h2>
 
     <!-- Dropdown to select the track -->
     <div class="dropdown">
@@ -111,21 +112,37 @@
 
         // Define configuration for multiple maps, including width and height
         const trackConfigs = {
-            imola: {
+            /*imola: {
                 imagePath: 'Maps/imolamap.png',
                 X_OFFSET: 955.115,
                 Z_OFFSET: 536.043,
                 SCALE_FACTOR: 1,
                 WIDTH: 1852.668,
                 HEIGHT: 1047.3228
+            },*/
+            imola: {
+                imagePath: 'Maps/imolamap.png',
+                X_OFFSET: 859.6035,
+                Z_OFFSET: 482.4387,
+                SCALE_FACTOR: 0.9,
+                WIDTH: 1667.4012,
+                HEIGHT: 942.59052
             },
-            nurburgring: {
+            /*nurburgring: {
                 imagePath: 'Maps/Nurburgringmap.png',
                 X_OFFSET: 422.16,
                 Z_OFFSET: 1034.46,
                 SCALE_FACTOR: 1,
                 WIDTH: 720.7248,
                 HEIGHT: 1878.552
+            },*/
+            nurburgring: {
+                imagePath: 'Maps/Nurburgringmap.png',
+                X_OFFSET: 211.08,
+                Z_OFFSET: 517.23,
+                SCALE_FACTOR: 0.5,
+                WIDTH: 360.3624,
+                HEIGHT: 939.276
             },
             redbullring: {
                 imagePath: 'Maps/RedBullRingmap.png',
@@ -151,14 +168,23 @@
                 WIDTH: 856.122,
                 HEIGHT: 982.443
             },
-            nordschleifet: {
+            /*nordschleifet: {
                 imagePath: 'Maps/NordschleifeTouristmap.png',
                 X_OFFSET: 679.87179,
                 Z_OFFSET: 624.5,
                 SCALE_FACTOR: 0.25641025641025641025641025641026,
                 WIDTH: 1579.03,
                 HEIGHT: 1244.07
+            }*/
+            nordschleifet: {
+                imagePath: 'Maps/NordschleifeTouristmap.png',
+                X_OFFSET: 477.27,
+                Z_OFFSET: 438.40,
+                SCALE_FACTOR: 0.18,
+                WIDTH: 1108.48,
+                HEIGHT: 873.34
             },
+            /*
             lagunaSeca: {
                 imagePath: 'Maps/LagunaSecamap.png',
                 X_OFFSET: 425.763,
@@ -166,6 +192,14 @@
                 SCALE_FACTOR: 1,
                 WIDTH: 828.487,
                 HEIGHT: 1009.51
+            }*/
+            lagunaSeca: {
+                imagePath: 'Maps/LagunaSecamap.png',
+                X_OFFSET: 385.1867,
+                Z_OFFSET: 445.2552,
+                SCALE_FACTOR: 0.9,
+                WIDTH: 745.6383,
+                HEIGHT: 908.559
             }
         };
 
@@ -209,11 +243,13 @@
                 // Draw driver as red dot
                 ctx.beginPath();
                 ctx.arc(x, y, 5, 0, 2 * Math.PI);
-                ctx.fillStyle = 'red';
+
+                if(driver.DriverName == "Felixxd") ctx.fillStyle = 'blue';
+                else ctx.fillStyle = 'red';
                 ctx.fill();
 
                 // Draw driver name next to the dot using the correct DriverName property
-                ctx.font = '20px Arial';
+                ctx.font = '16px Arial';
                 ctx.fillStyle = 'black';
 
                 // Check if the text is within the canvas bounds and adjust position if needed
