@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="navbar.css">
-    <script src="index.js"></script>
+    <script src="UserLapTimes.js" defer></script>
     <title>Rundenzeiten</title>
-    
-    
 </head>
-<body>   
+<body>
     <div class="logo-bar">
         <a href="https://htlwy.at"><img style="width: 80px; margin-right: 10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/HTL_Waidhofen_Ybbs.png/200px-HTL_Waidhofen_Ybbs.png"></a>
         <a href="https://assettocorsa.gg/"><img src="ACLogo.png" id="IMGLogo" alt="AC Logo"></a>
@@ -18,8 +16,8 @@
     <div class="navbar">
         <div class="navbar-menu">
             <ul>
-                <li><a class="active" href="index.html">Rundenzeiten</a></li>
-                <li><a href="UserLapTimes.html">Benutzer Rundenzeiten</a></li>
+                <li><a href="index.html">Rundenzeiten</a></li>
+                <li><a class="active" href="UserLapTimes.html">Benutzer Rundenzeiten</a></li>
                 <li><a href="rennen.html">Rennen</a></li>
                 <li><a href="LiveMap.html">Live Map</a></li>
                 <li><a href="LiveFeed.html">Live Feed</a></li>
@@ -27,22 +25,25 @@
             </ul>
         </div>
     </div>
-    
+
+    <!-- Datei-Upload-Formular -->
+    <input type="file" id="lapFileInput" accept=".ini" onchange="handleFileSelect(event)" />
+    <button onclick="resetAll()">Daten zurücksetzen</button>
 
     <table id="telemetryTable">
         <thead>
             <tr>
                 <th>Position</th>
                 <th>Driver Name</th>
-                <th>Car Model</th>
                 <th>Best Lap Time</th>
+                <th>Splits</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="lapsTableBody"></tbody>
     </table>
 
-<footer class="footer">
-    <p>Erstellt von Patrik Grabner & Felix Baumann</p>
-</footer>
+    <footer class="footer">
+        <p>Erstellt von Patrik Grabner & Felix Baumann</p>
+    </footer>
 </body>
 </html>

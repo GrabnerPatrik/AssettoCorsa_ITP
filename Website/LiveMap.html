@@ -67,13 +67,14 @@
 </head>
 <body>
     <div class="logo-bar">
-        <a href="https://htlwy.at"><img style="width: 80px; margin-right: 10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/HTL_Waidhofen_Ybbs.png/200px-HTL_Waidhofen_Ybbs.png"></a>
+        <a href="https://htlwy.at"><img style="width: 120px; margin-right: 10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/HTL_Waidhofen_Ybbs.png/200px-HTL_Waidhofen_Ybbs.png"></a>
         <a href="https://assettocorsa.gg/"><img src="ACLogo.png" id="IMGLogo" alt="AC Logo"></a>
     </div>
     <div class="navbar">
         <div class="navbar-menu">
             <ul>
                 <li><a href="index.html">Rundenzeiten</a></li>
+                <li><a href="UserLapTimes.html">Benutzer Rundenzeiten</a></li>
                 <li><a href="rennen.html">Rennen</a></li>
                 <li><a class="active" href="LiveMap.html">Live Map</a></li>
                 <li><a href="LiveFeed.html">Live Feed</a></li>
@@ -87,9 +88,9 @@
     <!-- Dropdown to select the track -->
     <div class="dropdown">
         <select id="trackSelect">
+            <option value="redbullring">Red Bull Ring</option>
             <option value="imola">Imola</option>
             <option value="nurburgring">Nürburgring</option>
-            <option value="redbullring">Red Bull Ring</option>
             <option value="mugello">Mugello</option>
             <option value="brandshatch">Brands Hatch</option>
             <option value="nordschleifet">Nordschleife Tourist</option>
@@ -122,11 +123,11 @@
             },*/
             imola: {
                 imagePath: 'Maps/imolamap.png',
-                X_OFFSET: 859.6035,
-                Z_OFFSET: 482.4387,
-                SCALE_FACTOR: 0.9,
-                WIDTH: 1667.4012,
-                HEIGHT: 942.59052
+                X_OFFSET: 573.069,
+                Z_OFFSET: 321.6258,
+                SCALE_FACTOR: 0.6,
+                WIDTH: 1111.6008,
+                HEIGHT: 628.39368
             },
             /*nurburgring: {
                 imagePath: 'Maps/Nurburgringmap.png',
@@ -138,12 +139,12 @@
             },*/
             nurburgring: {
                 imagePath: 'Maps/Nurburgringmap.png',
-                X_OFFSET: 211.08,
-                Z_OFFSET: 517.23,
-                SCALE_FACTOR: 0.5,
-                WIDTH: 360.3624,
-                HEIGHT: 939.276
-            },
+                X_OFFSET: 139.3128,
+                Z_OFFSET: 341.3718,
+                SCALE_FACTOR: 0.33,
+                WIDTH: 237.8391,
+                HEIGHT: 619.92216
+            }/*,
             redbullring: {
                 imagePath: 'Maps/RedBullRingmap.png',
                 X_OFFSET: 620.875,
@@ -151,6 +152,14 @@
                 SCALE_FACTOR: 1,
                 WIDTH: 1296.6,
                 HEIGHT: 822.72
+            }*/,
+            redbullring: {
+                imagePath: 'Maps/RedBullRingmap.png',
+                X_OFFSET: 465.65625,
+                Z_OFFSET: 300.79125,
+                SCALE_FACTOR: 0.75,
+                WIDTH: 972.45,
+                HEIGHT: 617.04
             },
             mugello: {
                 imagePath: 'Maps/Mugellomap.png',
@@ -160,13 +169,21 @@
                 WIDTH: 1495.89,
                 HEIGHT: 627.674
             },
-            brandshatch: {
+            /*brandshatch: {
                 imagePath: 'Maps/Brandshatchmap.png',
                 X_OFFSET: 436.964,
                 Z_OFFSET: 469.659,
                 SCALE_FACTOR: 1,
                 WIDTH: 856.122,
                 HEIGHT: 982.443
+            },*/
+            brandshatch: {
+                imagePath: 'Maps/Brandshatchmap.png',
+                X_OFFSET: 275.28732,
+                Z_OFFSET: 295.88517,
+                SCALE_FACTOR: 0.63,
+                WIDTH: 539.35686,
+                HEIGHT: 618.93909
             },
             /*nordschleifet: {
                 imagePath: 'Maps/NordschleifeTouristmap.png',
@@ -178,11 +195,11 @@
             }*/
             nordschleifet: {
                 imagePath: 'Maps/NordschleifeTouristmap.png',
-                X_OFFSET: 477.27,
-                Z_OFFSET: 438.40,
-                SCALE_FACTOR: 0.18,
-                WIDTH: 1108.48,
-                HEIGHT: 873.34
+                X_OFFSET: 338.57615,
+                Z_OFFSET: 311.001,
+                SCALE_FACTOR: 0.117,
+                WIDTH: 786.342,
+                HEIGHT: 619.54686
             },
             /*
             lagunaSeca: {
@@ -195,26 +212,37 @@
             }*/
             lagunaSeca: {
                 imagePath: 'Maps/LagunaSecamap.png',
-                X_OFFSET: 385.1867,
-                Z_OFFSET: 445.2552,
-                SCALE_FACTOR: 0.9,
-                WIDTH: 745.6383,
-                HEIGHT: 908.559
+                X_OFFSET: 259.71543,
+                Z_OFFSET: 301.78408,
+                SCALE_FACTOR: 0.61,
+                WIDTH: 505.37707,
+                HEIGHT: 615.8011
             }
         };
 
+        // window height/width
+        const heightWindowFactor = window.innerHeight / 972;
+        const widthWindowFactor = window.innerWidth / 2048;
+
+        /*const heightWindowFactor = window.innerHeight;
+        const widthWindowFactor = window.innerWidth;
+
+        console.log(heightWindowFactor);
+        console.log(widthWindowFactor);*/
+
         // Set the current track configuration (default 'imola')
-        let currentTrack = 'imola';
+        let currentTrack = 'redbullring';
         let config = trackConfigs[currentTrack];
 
         // Set the canvas width and height from the track configuration
-        canvas.width = config.WIDTH;
-        canvas.height = config.HEIGHT;
+        canvas.width = config.WIDTH * widthWindowFactor;
+        canvas.height = config.HEIGHT * heightWindowFactor;
 
         // Track image setup
         const trackImage = new Image();
         trackImage.src = config.imagePath;
 
+    
         // Draw track map when image is loaded
         trackImage.onload = () => {
             ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
@@ -237,8 +265,8 @@
             ctx.drawImage(trackImage, 0, 0, canvas.width, canvas.height);
 
             data.forEach(driver => {
-                const x = (driver.Position.x * config.SCALE_FACTOR) + config.X_OFFSET;
-                const y = (driver.Position.z * config.SCALE_FACTOR) + config.Z_OFFSET;
+                const x = (driver.Position.x * config.SCALE_FACTOR * widthWindowFactor) + config.X_OFFSET * widthWindowFactor;
+                const y = (driver.Position.z * config.SCALE_FACTOR * heightWindowFactor) + config.Z_OFFSET * heightWindowFactor;
 
                 // Draw driver as red dot
                 ctx.beginPath();
@@ -291,8 +319,8 @@
             config = trackConfigs[currentTrack];
 
             // Update canvas dimensions based on the selected track
-            canvas.width = config.WIDTH;
-            canvas.height = config.HEIGHT;
+            canvas.width = config.WIDTH * widthWindowFactor;
+            canvas.height = config.HEIGHT * heightWindowFactor;
 
             // Load new track image and redraw
             trackImage.src = config.imagePath;
