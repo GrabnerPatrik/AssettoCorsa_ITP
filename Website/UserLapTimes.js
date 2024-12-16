@@ -23,37 +23,34 @@ function parseLapData(lapData) {
 }
 
 // Funktion zum Anzeigen der Rundenzeiten in der Tabelle
-// Funktion zum Anzeigen der Rundenzeiten in der Tabelle
-// Funktion zum Anzeigen der Rundenzeiten in der Tabelle
 function displayLapTimes() {
     let laps = JSON.parse(localStorage.getItem('laps')) || [];
-    
+
     // Sortiere die Laps nach der besten Zeit (aufsteigend)
-    laps.sort((a, b) => a.time - b.time);  // Schnellerer Fahrer zuerst
-    
+    laps.sort((a, b) => a.time - b.time);
+
     let tableBody = document.getElementById("lapsTableBody");
-    tableBody.innerHTML = '';  // Tabelle leeren
+    tableBody.innerHTML = ''; // Tabelle leeren
 
     laps.forEach((lap, index) => {
         let row = document.createElement('tr');
-        
+
         let positionCell = document.createElement('td');
-        positionCell.textContent = index + 1;  // Position nach Reihenfolge
+        positionCell.textContent = index + 1; // Position nach Reihenfolge
         row.appendChild(positionCell);
 
-        // Hier den Fahrernamen aus der Runde holen
         let driverNameCell = document.createElement('td');
         let driverName = lap.driverName || 'Unbekannt';
         driverNameCell.textContent = driverName;
         row.appendChild(driverNameCell);
 
         let timeCell = document.createElement('td');
-        timeCell.textContent = formatTime(lap.time);  // Gesamtzeit formatieren
+        timeCell.textContent = formatTime(lap.time); // Gesamtzeit formatieren
         row.appendChild(timeCell);
 
         // Splits formatieren
         let splitsCell = document.createElement('td');
-        let formattedSplits = lap.splits.map(split => formatSplitTime(split)).join(', ');  // Alle Splits formatieren
+        let formattedSplits = lap.splits.map(split => formatTime(split)).join(', '); // Nutze formatTime für Splits
         splitsCell.textContent = formattedSplits;
         row.appendChild(splitsCell);
 
@@ -61,17 +58,7 @@ function displayLapTimes() {
     });
 }
 
-
-// Funktion zum Formatieren der Splitzeit
-function formatSplitTime(ms) {
-    let minutes = Math.floor(ms / 60000);
-    let seconds = Math.floor((ms % 60000) / 1000);
-    let milliseconds = ms % 1000;
-    return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}.${milliseconds}`;
-}
-
-
-// Funktion zum Formatieren der Zeit
+// Funktion zum Formatieren der Zeit (Runden- und Split-Zeiten)
 function formatTime(ms) {
     let minutes = Math.floor(ms / 60000);
     let seconds = Math.floor((ms % 60000) / 1000);
@@ -79,34 +66,39 @@ function formatTime(ms) {
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}.${milliseconds}`;
 }
 
-// Funktion zum Speichern des Fahrernamens im localStorage
-function saveDriverName(name) {
-    localStorage.setItem('driverName', name);
-}
-
 // Funktion zum Verarbeiten der hochgeladenen Datei
 function handleFileSelect(event) {
     const file = event.target.files[0];
     if (file && file.name.endsWith('.ini')) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             let lapData = e.target.result;
-            let laps = parseLapData(lapData);
+            let newLaps = parseLapData(lapData);
 
             // Fahrername vom Benutzer abfragen
             let driverName = prompt("Bitte geben Sie den Fahrernamen ein:");
             if (!driverName) {
-                driverName = 'Unbekannt';  // Falls kein Name eingegeben wird, setzen wir 'Unbekannt'
+                driverName = 'Unbekannt'; // Falls kein Name eingegeben wird, setzen wir 'Unbekannt'
             }
 
-            // Die neuen Laps mit dem Fahrername versehen
-            laps = laps.map(lap => ({ ...lap, driverName }));
-
-            // Alte Laps aus dem localStorage holen und neue hinzufügen
+            // Lade existierende Runden aus dem Speicher
             let existingLaps = JSON.parse(localStorage.getItem('laps')) || [];
-            existingLaps = existingLaps.concat(laps);  // Neue Runden anhängen
 
-            // Alle Laps im localStorage speichern
+            // Aktualisiere die beste Zeit für den Fahrer
+            newLaps.forEach(newLap => {
+                newLap.driverName = driverName;
+
+                // Überprüfe, ob Fahrer bereits in den bestehenden Daten ist
+                let existingLap = existingLaps.find(lap => lap.driverName === driverName);
+
+                if (!existingLap || newLap.time < existingLap.time) {
+                    // Ersetze bestehende Runde, wenn die neue schneller ist oder noch keine existiert
+                    existingLaps = existingLaps.filter(lap => lap.driverName !== driverName);
+                    existingLaps.push(newLap);
+                }
+            });
+
+            // Speicher aktualisierte Laps im localStorage
             localStorage.setItem('laps', JSON.stringify(existingLaps));
 
             // Die Anzeige direkt aktualisieren
@@ -118,23 +110,16 @@ function handleFileSelect(event) {
     }
 }
 
-// Funktion zum Entfernen von Fahrername und Rundenzeiten
+// Funktion zum Zurücksetzen aller Daten
 function resetAll() {
-    // Entfernt den Fahrernamen aus dem localStorage
     localStorage.removeItem('driverName');
-    
-    // Löscht die Rundenzeiten aus dem localStorage
     localStorage.removeItem('laps');
-
-    // Löscht die Rundenzeiten aus der Tabelle
-    let tableBody = document.getElementById("lapsTableBody");
-    tableBody.innerHTML = '';
-
+    document.getElementById("lapsTableBody").innerHTML = '';
     alert("Alle Daten wurden zurückgesetzt.");
-    displayLapTimes();  // Nach dem Zurücksetzen die Tabelle erneut anzeigen
+    displayLapTimes();
 }
 
 // Beim Laden der Seite die Rundenzeiten anzeigen
-window.onload = function() {
+window.onload = function () {
     displayLapTimes();
 };
