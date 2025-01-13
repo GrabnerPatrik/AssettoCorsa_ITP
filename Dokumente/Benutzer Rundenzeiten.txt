@@ -1,0 +1,2 @@
+Wenn Benutzerrundenzeiten auf der Webseite hinzugefügt werden sollen. Drücke auf Datei auswählen und gehe zu der Datei "C:Dokumente\Assetto Corsa\out\laps.ini".
+Gebe danach in dem Pop-up Menü einen Namen für den Benutzer ein.

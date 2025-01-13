@@ -1,3 +1,0 @@
-Im Dokumenten-Ordner in Windows, gibt es einen Ordner, der nach jeder Sitzung die Daten der Runde ausgibt.
-Diese können wir nach jeder Sitzung exportieren und in die Webseite eintragen.
-Im Nachhinein oder davor, kann der Name des Spielers eingetragen werden.
